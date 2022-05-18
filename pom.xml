@@ -32,6 +32,7 @@
     <modules>
         <module>with-spring</module>
         <module>with-junit5</module>
+        <module>with-junit4</module>
     </modules>
 
     <properties>
