@@ -11,13 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Demo how to read text file resources in JUnit 5 (Jupiter) tests")
 public class TextResourcesTest {
 
-    // Read content of resource alice.txt into this field
+    // Read content of resource alice.txt into String field
     @GivenTextResource("/io/hosuaby/alice.txt")
     String fieldWithText;
 
     @Test
     void testThatUsesTextField() {
-        // We can use content of resource file in the test
+        // We can use content of resource file in our test
         assertThat(fieldWithText)
                 .isNotNull()
                 .isNotEmpty()
