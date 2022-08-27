@@ -1,0 +1,3 @@
+###
+# Get logs from application
+GET http://localhost:8080/inject-resources-examples/logs

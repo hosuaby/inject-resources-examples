@@ -42,6 +42,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <spring.boot.version>2.7.3</spring.boot.version>
+
         <jackson.version>2.13.3</jackson.version>
         <snakeyaml.version>1.30</snakeyaml.version>
 
