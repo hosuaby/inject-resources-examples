@@ -1,14 +1,12 @@
-package io.hosuaby.inject.resources.examples.junit5.tests;
+package io.hosuaby.inject.resources.examples.junit4.tests;
 
-import com.adelean.inject.resources.junit.jupiter.GivenYamlDocumentsResource;
-import com.adelean.inject.resources.junit.jupiter.GivenYamlResource;
-import com.adelean.inject.resources.junit.jupiter.TestWithResources;
-import com.adelean.inject.resources.junit.jupiter.WithSnakeYaml;
-import io.hosuaby.inject.resources.examples.junit5.domain.LogSeverity;
-import io.hosuaby.inject.resources.examples.junit5.domain.Person;
-import io.hosuaby.inject.resources.examples.junit5.domain.YamlLog;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.adelean.inject.resources.junit.vintage.yaml.YamlDocumentsResource;
+import com.adelean.inject.resources.junit.vintage.yaml.YamlResource;
+import io.hosuaby.inject.resources.examples.junit4.domain.LogSeverity;
+import io.hosuaby.inject.resources.examples.junit4.domain.Person;
+import io.hosuaby.inject.resources.examples.junit4.domain.YamlLog;
+import org.junit.Rule;
+import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -17,30 +15,29 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import static com.adelean.inject.resources.junit.vintage.GivenResource.givenResource;
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
-@TestWithResources  // <-- Add @TestWithResources extension
-@DisplayName("Demo how to read YAML file resources in JUnit 5 (Jupiter) tests")
 public class YamlResourcesTest {
-
-    @WithSnakeYaml("default")
     Yaml yaml = new Yaml();
-
-    @WithSnakeYaml("log-parser")
     Yaml logParser = new Yaml(new Constructor(YamlLog.class));
 
-    @GivenYamlResource("/io/hosuaby/sponge-bob.yaml")
-    Person spongeBob;
+    @Rule   // Declare rule to read content of resource into the field
+    public YamlResource<Person> spongeBob = givenResource()
+            .yaml("/io/hosuaby/sponge-bob.yaml")
+            .parseWith(yaml);
 
-    @GivenYamlDocumentsResource(from = "/io/hosuaby/logs.yml", yaml = "log-parser")
-    List<YamlLog> logs;
+    @Rule   // Declare rule to read content of resource into the field
+    public YamlDocumentsResource<List<YamlLog>> logs = givenResource()
+            .yamlDocuments("/io/hosuaby/logs.yml")
+            .parseWith(logParser);
 
     @Test
-    void testWithYamlFromResource() {
+    public void testWithYamlFromResource() {
         // We can use content of resource file in our test
-        assertThat(spongeBob)
+        assertThat(spongeBob.get())
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("firstName", "Bob")
                 .hasFieldOrPropertyWithValue("lastName", "Square Pants")
@@ -54,9 +51,9 @@ public class YamlResourcesTest {
     }
 
     @Test
-    void testWithYamlDocumentsFromResource() {
+    public void testWithYamlDocumentsFromResource() {
         // We can use content of resource file in our test
-        assertThat(logs)
+        assertThat(logs.get())
                 .isNotNull()
                 .isNotEmpty()
                 .hasSize(3)
