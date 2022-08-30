@@ -4,6 +4,6 @@ Examples of how to read resources files in Java in simple and convenient manner 
 
 Here the examples of how to Get content of resources into
 
-- JUnit 5 tests
-- JUnit 4 tests
-- Spring beans
+- [JUnit 5 tests](./with-junit5)
+- [JUnit 4 tests](./with-junit4)
+- [Spring beans](./with-spring)
